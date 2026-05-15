@@ -45,10 +45,10 @@
     "access": "public"
   },
   "scripts": {
-    "release:patch": "npm version patch -m 'release: %s' && npm publish",
-    "release:minor": "npm version minor -m 'release: %s' && npm publish",
-    "release:major": "npm version major -m 'release: %s' && npm publish",
-    "release:prerelease": "npm version prerelease --preid=rc -m 'release: %s' && npm publish --tag next"
+    "release:patch": "npm version patch",
+    "release:minor": "npm version minor",
+    "release:major": "npm version major",
+    "release:prerelease": "npm version prerelease --preid=beta"
   },
   "keywords": [
     "design-system",
