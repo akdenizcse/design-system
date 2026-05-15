@@ -53,6 +53,7 @@
     "access": "public"
   },
   "scripts": {
+    "version": "node -e \"require('fs').writeFileSync('src/version.js','export default \\''+process.env.npm_package_version+'\\';\\n')\" && git add src/version.js",
     "release:patch": "npm version patch",
     "release:minor": "npm version minor",
     "release:major": "npm version major",
