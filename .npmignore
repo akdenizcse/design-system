@@ -1,0 +1,11 @@
+# Excluded from the published tarball; the `files` field in package.json
+# already opts files in, but this is a belt-and-braces fallback.
+preview/
+ui_kits/
+slides/
+uploads/
+scraps/
+.review/
+*.test.*
+.github/
+.vscode/

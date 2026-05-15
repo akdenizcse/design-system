@@ -1,0 +1,18 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Form fields</title><link rel="stylesheet" href="../colors_and_type.css"></head><body style="margin:0;padding:24px;background:#fff;width:700px;font-family:'Gotham Narrow',sans-serif">
+<style>
+  .field{display:flex;flex-direction:column;gap:6px}
+  .field label{font-size:13px;font-weight:500;color:#0E1A33}
+  .field input,.field select,.field textarea{font:inherit;font-size:14px;color:#0E1A33;background:#fff;border:1px solid rgba(29,54,106,0.16);border-radius:8px;padding:10px 12px;outline:none;transition:border-color 120ms,box-shadow 120ms}
+  .field input:focus,.field select:focus,.field textarea:focus{border-color:#0063AA;box-shadow:0 0 0 3px rgba(0,99,170,.18)}
+  .field .help{font-size:12px;color:#6B7591}
+  .field.err input{border-color:#C9342C}
+  .field.err .help{color:#C9342C}
+</style>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+  <div class="field"><label>Ad Soyad</label><input value="Mehmet Demir"></div>
+  <div class="field"><label>Öğrenci no</label><input placeholder="20240000"></div>
+  <div class="field"><label>Fakülte</label><select><option>Mühendislik Fakültesi</option><option>Tıp Fakültesi</option><option>Hukuk Fakültesi</option></select></div>
+  <div class="field err"><label>E-posta</label><input value="not-an-email"><div class="help">Geçerli bir e-posta adresi girin.</div></div>
+  <div class="field" style="grid-column:1/-1"><label>Açıklama</label><textarea rows="3" placeholder="Talebinizi kısaca yazın…"></textarea></div>
+</div>
+</body></html>

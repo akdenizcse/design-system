@@ -1,0 +1,68 @@
+{
+  "name": "@akdeniz-uni/design-system",
+  "version": "0.1.0",
+  "description": "Akdeniz University design system — colors, typography, fonts, brand assets and React UI kit components for the academic portal.",
+  "license": "UNLICENSED",
+  "private": false,
+  "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
+  "main": "./src/index.js",
+  "module": "./src/index.js",
+  "types": "./src/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./src/index.js",
+      "types": "./src/index.d.ts"
+    },
+    "./tokens.css": "./colors_and_type.css",
+    "./components": "./src/components/index.js",
+    "./components/*": "./src/components/*.js",
+    "./assets/*": "./assets/*",
+    "./fonts/*": "./fonts/*",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "src",
+    "assets",
+    "fonts",
+    "colors_and_type.css",
+    "README.md",
+    "CHANGELOG.md",
+    "SKILL.md",
+    "LICENSE"
+  ],
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react": { "optional": false },
+    "react-dom": { "optional": true }
+  },
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "scripts": {
+    "release:patch": "npm version patch -m 'release: %s' && npm publish",
+    "release:minor": "npm version minor -m 'release: %s' && npm publish",
+    "release:major": "npm version major -m 'release: %s' && npm publish",
+    "release:prerelease": "npm version prerelease --preid=rc -m 'release: %s' && npm publish --tag next"
+  },
+  "keywords": [
+    "design-system",
+    "akdeniz",
+    "akdeniz-universitesi",
+    "tokens",
+    "react",
+    "ui-kit"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://example.com/akdeniz-uni/design-system.git"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
