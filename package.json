@@ -1,6 +1,6 @@
 {
   "name": "@akdenizcse/design-system",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Akdeniz University design system — colors, typography, fonts, brand assets and React UI kit components for the academic portal.",
   "license": "UNLICENSED",
   "private": false,
