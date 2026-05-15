@@ -1,0 +1,67 @@
+name: release
+
+# Publishes the package to npm whenever a version tag (v*.*.*) is pushed.
+# Workflow:
+#   1. bump locally: `npm run release:patch|minor|major`
+#      (this runs `npm version <bump>`, which writes package.json,
+#       runs the `version` lifecycle hook to sync src/version.js,
+#       creates a git tag and commit)
+#   2. push: `git push --follow-tags`
+#   3. this workflow runs, publishes to npm, and creates a GitHub Release.
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+      - 'v*.*.*-*'    # prereleases, e.g. v0.2.0-rc.1
+
+permissions:
+  contents: write     # to create the GitHub Release
+  id-token: write     # required for npm provenance attestations
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out tag
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Verify tag matches package.json
+        run: |
+          PKG_VERSION=$(node -p "require('./package.json').version")
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          echo "Tag:     $TAG_VERSION"
+          echo "Package: $PKG_VERSION"
+          if [ "$PKG_VERSION" != "$TAG_VERSION" ]; then
+            echo "::error::Tag $TAG_VERSION does not match package.json version $PKG_VERSION"
+            exit 1
+          fi
+
+      - name: Inspect tarball contents
+        run: npm pack --dry-run
+
+      - name: Publish to npm (stable)
+        if: "!contains(github.ref_name, '-')"
+        run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish to npm (prerelease)
+        if: "contains(github.ref_name, '-')"
+        run: npm publish --provenance --access public --tag next
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          generate_release_notes: true
+          prerelease: ${{ contains(github.ref_name, '-') }}

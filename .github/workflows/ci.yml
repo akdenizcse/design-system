@@ -1,0 +1,52 @@
+name: ci
+
+# Runs on every push and pull request to verify the package is publishable
+# without actually publishing it.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install (if a lockfile exists)
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            echo "No lockfile yet — skipping install."
+          fi
+
+      - name: Pack (dry run)
+        run: npm pack --dry-run
+
+      - name: Verify exports resolve
+        run: |
+          node --input-type=module -e "import('./src/index.js').then(m => console.log('exports:', Object.keys(m)))"
+
+      - name: Verify CSS tokens file exists
+        run: test -f colors_and_type.css
+
+      - name: Verify version constant matches package.json
+        run: |
+          PKG=$(node -p "require('./package.json').version")
+          SRC=$(node --input-type=module -e "import('./src/version.js').then(m => process.stdout.write(m.default))")
+          echo "package.json: $PKG"
+          echo "src/version.js: $SRC"
+          if [ "$PKG" != "$SRC" ]; then
+            echo "::error::src/version.js ($SRC) is out of sync with package.json ($PKG). Run 'npm version' to fix."
+            exit 1
+          fi
